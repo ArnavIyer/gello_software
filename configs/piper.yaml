@@ -1,0 +1,26 @@
+# Piper robot configuration WITH gripper
+# Usage: python experiments/launch_yaml.py --left-config-path configs/piper.yaml
+
+robot:
+  _target_: gello.robots.piper.PiperRobot
+  can_port: "can0"
+  gripper: true
+
+agent:
+  _target_: gello.agents.gello_agent.GelloAgent
+  # TODO: Update this to your U2D2 device path
+  # Find with: ls /dev/serial/by-id/
+  port: "/dev/serial/by-id/usb-FTDI_USB__-__Serial_Converter_XXXXXXXX-if00-port0"
+  dynamixel_config:
+    _target_: gello.agents.gello_agent.DynamixelRobotConfig
+    # Servo IDs for 6 arm joints + 1 gripper
+    joint_ids: [1, 2, 3, 4, 5, 6]
+    # TODO: Run calibration script and update these values
+    # python scripts/gello_get_offset.py --port <your-port> --start-joints 0 0 0 0 0 0 --joint-signs 1 1 1 1 1 1 --gripper true
+    joint_offsets: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    joint_signs: [1, 1, 1, 1, 1, 1]
+    # Gripper config: [servo_id, open_degrees, close_degrees]
+    # TODO: Update with values from calibration script
+    gripper_config: [7, 195, 152]
+
+hz: 50
